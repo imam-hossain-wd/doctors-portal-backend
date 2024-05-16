@@ -14,7 +14,7 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import { Secret } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { User } from './auth.model';
-import generateRandomId from '../../../shared/generateRamdomId';
+import { generateRamdonUserId } from '../../../shared/generateRamdomId';
 
 const insertIntoDB = async (user: IUser): Promise<IUser | null> => {
   //@ts-ignore
@@ -24,13 +24,12 @@ const insertIntoDB = async (user: IUser): Promise<IUser | null> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User is already exits');
   }
 
-  const userId = generateRandomId();
+  const userId = generateRamdonUserId();
   //@ts-ignore
-  user.user_id=userId;
+  user.user_id = userId;
   const createdUser = await User.create(user);
   return createdUser;
 };
-
 
 const logInUser = async (userData: ILogInUser): Promise<ILoginUserResponse> => {
   //@ts-ignore
@@ -50,7 +49,7 @@ const logInUser = async (userData: ILogInUser): Promise<ILoginUserResponse> => {
   const { _id, role, email } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
-    { _id, role , email },
+    { _id, role, email },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
@@ -98,7 +97,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   };
 };
 
-
 //change password
 
 const changePassword = async (userInfo: IChangePassword) => {
@@ -110,7 +108,7 @@ const changePassword = async (userInfo: IChangePassword) => {
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-//@ts-ignore
+  //@ts-ignore
   const isMatchPassword = await User.isPasswordMatched(
     oldPassword,
     isUserExist.password
@@ -122,15 +120,20 @@ const changePassword = async (userInfo: IChangePassword) => {
   }
 
   // Hash the new password before updating
-  const hashedPassword = await bcrypt.hash(newPassword, Number(config.bycrypt_salt_rounds));
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bycrypt_salt_rounds)
+  );
 
   // Update the user with the hashed password
-  const result = await User.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true });
-console.log(result, 'result');
+  const result = await User.findOneAndUpdate(
+    { email },
+    { password: hashedPassword },
+    { new: true }
+  );
+  console.log(result, 'result');
   return result;
 };
-
-
 
 export const authService = {
   insertIntoDB,

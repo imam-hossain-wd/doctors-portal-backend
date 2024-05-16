@@ -2,6 +2,7 @@
 import express from 'express';
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { UserRoutes } from '../modules/user/user.route';
+import { HospitalRoutes } from '../modules/hospital/hospital.route';
 
 
 const router = express.Router();
@@ -14,6 +15,10 @@ const moduleRoutes = [
   {
     path: '/user',
     route: UserRoutes,
+  },
+  {
+    path: '/hospital',
+    route: HospitalRoutes,
   },
 ];
 //@ts-ignore
