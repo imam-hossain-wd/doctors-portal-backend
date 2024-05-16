@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
 import { IUser, UserRole } from './auth.interface';
-import { ObjectId } from 'mongodb';
-import mongoose from 'mongoose';
+
 
 
 const userSchema = new Schema<IUser>(
