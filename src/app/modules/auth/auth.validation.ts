@@ -1,13 +1,9 @@
 import { z } from 'zod';
-import { UserRole } from './auth.interface';
 
 
 const createUserZodSchema = z.object({
   body: z.object({
     _id: z.string().optional(),
-    appointment_id: z.string({
-      required_error: 'appointment_id is required',
-    }),
     name: z.string({
       required_error: 'name is required',
     }),
