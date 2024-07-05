@@ -6,11 +6,13 @@ import { IUser, UserRole } from './auth.interface';
 
 
 
+
 const userSchema = new Schema<IUser>(
   {
     user_id: { type: String },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    profileImageUrl: { type: String},
     password: { type: String, required: true, unique: true },
     phone_number: { type: String, required: true },
     role: { type: String, enum: Object.values(UserRole), default: UserRole.PATIENT },

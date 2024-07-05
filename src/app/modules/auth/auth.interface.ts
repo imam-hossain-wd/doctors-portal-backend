@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-import { Model } from 'mongoose';
 import mongoose from 'mongoose';
 
 export enum UserRole {
@@ -16,6 +15,7 @@ export type IUser = {
   user_id?:string;
   name: string;
   email: string;
+  profileImageUrl?: string;
   password:string;
   phone_number: string;
   role: UserRole;

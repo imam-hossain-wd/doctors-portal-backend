@@ -2,20 +2,16 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IHospital } from './hospital.interface';
-import { Hospital } from './hospital.model';
-import { generateRamdonHospitalId } from '../../../shared/generateRamdomId';
+import Hospital from './hospital.model';
 
 
 const createHospital = async (
   payload: IHospital
 ): Promise<IHospital | null> => {
-  const hospital_id = generateRamdonHospitalId();
-  //@ts-ignore
-  payload.hospital_id = hospital_id;
-
   const createdUser = await Hospital.create(payload);
   return createdUser;
 };
+
 
 const getAllHospitals = async () => {
   const result = await Hospital.find({});

@@ -4,11 +4,15 @@ import validateRequest from '../../middlewares/validateRequest';
 import { AuthValidation } from './auth.validation';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+import { profileUpload } from '../../../utils/multerUploader';
+
 
 const router = Router();
+
 router.post(
   '/signup',
-  validateRequest(AuthValidation.createUserZodSchema),
+  profileUpload.single('image'),
+  // validateRequest(AuthValidation.createUserZodSchema),
   authController.createUser
 );
 

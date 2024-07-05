@@ -7,13 +7,13 @@ const router = Router();
 
 router.get(
   '/',
-  auth(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.SUPER_ADMIN,
-    ENUM_USER_ROLE.PATIENT,
-    ENUM_USER_ROLE.DOCTOR,
-    ENUM_USER_ROLE.DONOR
-  ),
+  // auth(
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.SUPER_ADMIN,
+  //   ENUM_USER_ROLE.PATIENT,
+  //   ENUM_USER_ROLE.DOCTOR,
+  //   ENUM_USER_ROLE.DONOR
+  // ),
   userController.getAllUsers
 );
 
