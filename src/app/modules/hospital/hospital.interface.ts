@@ -26,7 +26,6 @@ export type IHospitalFiltersProps = {
   searchTerm?: string;
   city?: string;
   rating?: number;
- 
 }
 
 

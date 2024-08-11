@@ -8,3 +8,7 @@ export const generateRamdonUserId = () => {
 export const generateRamdonHospitalId = () => {
   return Math.floor(10000 + Math.random() * 90000);
 };
+
+export const generateRamdonDoctorId = () => {
+  return Math.floor(10000 + Math.random() * 900000);
+};
