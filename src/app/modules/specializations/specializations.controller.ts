@@ -18,9 +18,20 @@ const createSpecializations: RequestHandler = catchAsync(async (req, res) => {
     });
   });
 
+const getSpecializations: RequestHandler = catchAsync(async (req, res) => {
+    const result = await specializationsService.getSpecializations();
+    sendResponse<ISpecializations[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Retrived Specializations successfully',
+      data: result,
+    });
+  });
+
 
 
   export const SpecializationsController = {
-    createSpecializations
+    createSpecializations,
+    getSpecializations
   }
   

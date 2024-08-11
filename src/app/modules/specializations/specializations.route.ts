@@ -8,6 +8,10 @@ router.post(
   '/create',
   SpecializationsController.createSpecializations
 );
+router.get(
+  '/',
+  SpecializationsController.getSpecializations
+);
 
 
 
