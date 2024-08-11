@@ -4,6 +4,8 @@ import sendResponse from '../../../shared/sendResponse';
 import { RequestHandler } from 'express';
 import { HospitalService } from './hospital.service';
 import { IHospital } from './hospital.interface';
+import pick from '../../../shared/pick';
+import { hospitalFilterableFields } from './hospital.constrants';
 
 const createHospital: RequestHandler = catchAsync(async (req, res) => {
   const data = req.body;
@@ -16,15 +18,21 @@ const createHospital: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+
 const getAllHospitals: RequestHandler = catchAsync(async (req, res) => {
-  const result = await HospitalService.getAllHospitals();
-  sendResponse<IHospital[]>(res, {
+  const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
+  const filters = pick(req.query,hospitalFilterableFields);
+  // console.log(filters, 'product filters..');
+ 
+  const result = await HospitalService.getAllHospitals(options, filters);
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Retrived all Hospitals successfully',
     data: result,
   });
 });
+
 
 const getSingleHospital: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;

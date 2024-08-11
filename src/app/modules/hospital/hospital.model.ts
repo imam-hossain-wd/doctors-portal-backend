@@ -28,6 +28,7 @@ const HospitalSchema: Schema = new Schema({
   phone_number: { type: String, required: true },
   address: { type: String, required: true },
   city: { type: String, required: true },
+  rating: { type: Number, required: true },
   description: { type: String, required: true },
   website_link: { type: String, required: true },
 }, {

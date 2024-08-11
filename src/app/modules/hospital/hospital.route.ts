@@ -13,13 +13,13 @@ router.post(
 
 router.get(
   '/',
-  auth(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.SUPER_ADMIN,
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.DOCTOR,
-    ENUM_USER_ROLE.DONOR
-  ),
+  // auth(
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.SUPER_ADMIN,
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.DOCTOR,
+  //   ENUM_USER_ROLE.DONOR
+  // ),
   HospitalController.getAllHospitals
 );
 

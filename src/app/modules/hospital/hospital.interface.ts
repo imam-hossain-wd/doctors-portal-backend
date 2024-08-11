@@ -9,8 +9,26 @@ export type IHospital = {
     phone_number: string;
     address: string;
     city: string;
+    rating:number;
     description: string;
     website_link: string;
   };
+
+
+  export type IHospitalPaginationProps ={
+    sortBy?: string;
+    sortOrder?: string;
+    page?:number;
+    limit?:number;
+}
+
+export type IHospitalFiltersProps = {
+  searchTerm?: string;
+  city?: string;
+  rating?: number;
+ 
+}
+
+
   
 
