@@ -11,6 +11,10 @@ router.post(
   '/create',
   DoctorController.addDoctor
 );
+router.get(
+  '/',
+  DoctorController.getDoctors
+);
 
 
 

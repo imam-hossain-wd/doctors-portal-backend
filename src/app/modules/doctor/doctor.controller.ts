@@ -19,7 +19,18 @@ const addDoctor: RequestHandler = catchAsync(async (req, res) => {
     });
   });
 
+const getDoctors: RequestHandler = catchAsync(async (req, res) => {
+    const result = await DoctorService.getDoctors();
+    sendResponse<IDoctor[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Retrived Doctor successfully',
+      data: result,
+    });
+  });
+
 
   export const DoctorController = {
-    addDoctor 
+    addDoctor,
+    getDoctors
   }
