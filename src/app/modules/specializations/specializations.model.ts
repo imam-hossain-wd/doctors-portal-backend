@@ -1,11 +1,18 @@
 import mongoose, { Schema } from 'mongoose';
-import { ISpecializations } from './specializations.interface';
+import { ISpecializations, Specialty } from './specializations.interface';
 
 const SpecializationsSchema: Schema = new Schema(
   {
-    name: { type: String, unique: true },
-    description: { type: String, unique: false },
-    
+    name: {
+      type: String,
+      enum: Object.values(Specialty),
+      unique: true,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
