@@ -2,7 +2,8 @@
 
 
 import mongoose from "mongoose";
-import { City, role } from "./doctor.constants";
+import { City, UserRole } from "../../../constants";
+
 
 export type IDoctor = {
     _id?: mongoose.Types.ObjectId;
@@ -14,7 +15,7 @@ export type IDoctor = {
     speciality:string;
     image: string;
     phone_number: string;
-    role:role;
+    role:UserRole;
     address: string;
     city: City;
     rating:number;

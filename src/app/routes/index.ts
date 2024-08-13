@@ -1,3 +1,4 @@
+import { ServiceRoutes } from './../modules/services/services.route';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import express from 'express';
 import { AuthRoutes } from '../modules/auth/auth.route';
@@ -29,6 +30,10 @@ const moduleRoutes = [
   {
     path: '/specializations',
     route: SpecializationRoutes,
+  },
+  {
+    path: '/service',
+    route: ServiceRoutes,
   },
 ];
 //@ts-ignore

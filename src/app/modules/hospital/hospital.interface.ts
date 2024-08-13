@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { City } from "../../../constants";
 
 export type IHospital = {
     _id?: mongoose.Types.ObjectId;
@@ -8,7 +9,7 @@ export type IHospital = {
     email: string;
     phone_number: string;
     address: string;
-    city: string;
+    city: City;
     rating:number;
     description: string;
     website_link: string;

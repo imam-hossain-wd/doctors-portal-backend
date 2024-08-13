@@ -2,9 +2,9 @@
 // import { Schema, model } from 'mongoose';
 // import { IHospital } from './hospital.interface';
 
-import mongoose, { Schema } from "mongoose";
-import { IHospital } from "./hospital.interface";
-
+import mongoose, { Schema } from 'mongoose';
+import { IHospital } from './hospital.interface';
+import { City } from '../../../constants';
 
 // const hospitalSchema = new Schema<IHospital>(
 //   {
@@ -16,24 +16,25 @@ import { IHospital } from "./hospital.interface";
 //   },
 // );
 
-
-
 // export const Hospital = model<IHospital>('Hospital', hospitalSchema);
 
-const HospitalSchema: Schema = new Schema({
-  hospital_id: { type: String, unique: true },
-  hospital_name: { type: String, required: true },
-  image: { type: String, required: true },
-  email: { type: String, required: true },
-  phone_number: { type: String, required: true },
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  rating: { type: Number, required: true },
-  description: { type: String, required: true },
-  website_link: { type: String, required: true },
-}, {
-  timestamps: true // Adds createdAt and updatedAt timestamps
-});
+const HospitalSchema: Schema = new Schema(
+  {
+    hospital_id: { type: String, unique: true },
+    hospital_name: { type: String, required: true },
+    image: { type: String, required: true },
+    email: { type: String, required: true },
+    phone_number: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, enum: Object.values(City), required: true },
+    rating: { type: Number, required: true },
+    description: { type: String, required: true },
+    website_link: { type: String, required: true },
+  },
+  {
+    timestamps: true, // Adds createdAt and updatedAt timestamps
+  }
+);
 
 // Pre-save hook to generate a unique 4-digit hospital_id
 HospitalSchema.pre<IHospital>('save', async function (next) {
@@ -45,7 +46,9 @@ HospitalSchema.pre<IHospital>('save', async function (next) {
     // Generate a unique 4-digit ID
     do {
       newId = Math.floor(1000 + Math.random() * 9000).toString();
-      existingHospital = await mongoose.model('Hospital').findOne({ hospital_id: newId });
+      existingHospital = await mongoose
+        .model('Hospital')
+        .findOne({ hospital_id: newId });
     } while (existingHospital);
 
     hospital.hospital_id = newId;

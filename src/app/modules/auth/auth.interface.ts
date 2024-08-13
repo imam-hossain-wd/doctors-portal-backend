@@ -1,13 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 import mongoose from 'mongoose';
+import { UserRole } from '../../../constants';
 
-export enum UserRole {
-  PATIENT = "patient",
-  DOCTOR = "doctor",
-  ADMIN = "admin",
-  SUPER_ADMIN = "super_admin",
-}
 
 
 export type IUser = {

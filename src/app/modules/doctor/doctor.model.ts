@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import {  City, role } from "./doctor.constants";
 import { IDoctor } from "./doctor.interface";
+import { City,  UserRole } from "../../../constants";
 
 const DoctorSchema: Schema = new Schema(
   {
@@ -18,7 +18,7 @@ const DoctorSchema: Schema = new Schema(
       required: true,
       unique: true,
     },
-    qualification: {
+    specilization_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Specializations",  // Reference to the Specializations model
         required: true,
@@ -27,7 +27,7 @@ const DoctorSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    speciality: {
+    qualification: {
       type: String,
       required: true,
     },
@@ -41,7 +41,7 @@ const DoctorSchema: Schema = new Schema(
     },
     role: {
       type: String,
-      enum: Object.values(role),
+      enum: Object.values(UserRole),
       required: true,
     },
     address: {
