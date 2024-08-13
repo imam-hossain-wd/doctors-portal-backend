@@ -12,3 +12,7 @@ export const generateRamdonHospitalId = () => {
 export const generateRamdonDoctorId = () => {
   return Math.floor(10000 + Math.random() * 900000);
 };
+
+export const generateRamdonDonor = () => {
+  return Math.floor(10000 + Math.random() * 9000000);
+};

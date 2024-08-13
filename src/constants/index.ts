@@ -19,5 +19,6 @@ export enum City {
     Admin ="Admin",
     Super_Admin= "Super_Admin",
     Patient="Patient",
-    Doctor ="Doctor"
+    Doctor ="Doctor",
+    Donor ="Donor"
   }
