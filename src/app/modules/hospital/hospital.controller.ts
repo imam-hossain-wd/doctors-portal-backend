@@ -22,8 +22,6 @@ const createHospital: RequestHandler = catchAsync(async (req, res) => {
 const getAllHospitals: RequestHandler = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
   const filters = pick(req.query,hospitalFilterableFields);
-  // console.log(filters, 'product filters..');
- 
   const result = await HospitalService.getAllHospitals(options, filters);
   sendResponse(res, {
     statusCode: httpStatus.OK,

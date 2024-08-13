@@ -22,9 +22,6 @@ const getDoctors: RequestHandler = catchAsync(async (req, res) => {
 
   const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
   const filters = pick(req.query,doctorFilterableFields);
-
-  // console.log(options, filters, 'options, filters');
-
   const result = await DoctorService.getDoctors(options, filters);
   sendResponse<IDoctor[]>(res, {
     statusCode: httpStatus.OK,

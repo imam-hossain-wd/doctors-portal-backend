@@ -1,10 +1,11 @@
-import { hospitalFilterableFields } from './hospital.constrants';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { hospitalFilterableFields, hospitalSearchAbleFields } from './hospital.constrants';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { IHospital, IHospitalFiltersProps, IHospitalPaginationProps } from './hospital.interface';
+import { IHospital } from './hospital.interface';
 import Hospital from './hospital.model';
-import { IGenericResponse } from '../../../interfaces/common';
+import { IGenericResponse, IPaginationProps } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 
 
@@ -16,117 +17,74 @@ const createHospital = async (
 };
 
 
-// const getAllHospitals = async (options:IHospitalPaginationProps, filters:IHospitalFiltersProps):Promise<IGenericResponse<IHospital[]>>  => {
 
-//   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-//   const { searchTerm, ...filtersData } = filters;
-//   const { sortBy, sortOrder } = options;
-
-//   console.log(sortBy, sortOrder,page, limit, skip, searchTerm, filtersData ,'sortBy, sortOrder,page, limit, skip, searchTerm, ...filtersData ');
-
-//   const andConditions = [];
-
-// const stringFields = hospitalFilterableFields.filter(field => field !== 'price');
-// //@ts-ignore
-// const numericSearchTerm = !isNaN(parseFloat(searchTerm)) ? parseFloat(searchTerm) : null;
-// const priceRange = 1;
-
-// if (searchTerm) {
-//   const orConditions = stringFields.map((field) => ({
-//     [field]: {
-//       $regex: searchTerm,
-//       $options: 'i',
-//     },
-//   }));
-
-//   if (category) {
-//     andConditions.push({ category });
-//   }
-  
-
-//   const whereConditions =
-//   andConditions.length > 0 ? { $and: andConditions } : {};
-
-// const sortConditions : {[key:string]:sortOrder} = {};
-
-// if(sortBy && sortOrder){
-//   //@ts-ignore
-//   sortConditions[sortBy]= sortOrder
-// }
-
-
-// const [data, total] = await Promise.all([
-//   Hospital.find(whereConditions).sort(sortConditions).skip(skip).limit(limit),
-//   Hospital.countDocuments(whereConditions),
-// ]);
-
-// return {
-//   meta: {
-//     page,
-//     limit,
-//     total,
-//     count: data.length
-//   },
-//   data
-// };
-// };
+type SortOrder = 1 | -1 | 'asc' | 'desc';
 
 const getAllHospitals = async (
-  options: IHospitalPaginationProps,
-  filters: IHospitalFiltersProps
+  options: IPaginationProps,
+  filters: any
 ): Promise<IGenericResponse<IHospital[]>> => {
 
-  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filtersData } = filters;
-  const { sortBy, sortOrder } = options;
+  
+  const { page, limit, skip, sortBy, sortOrder } =
+  paginationHelpers.calculatePagination(options);
+const { searchTerm, ...filtersData } = filters;
 
-  const andConditions = [];
+const andConditions: any[] = [];
 
-  // Construct search condition
-  if (searchTerm) {
-    const orConditions = hospitalFilterableFields.map((field) => ({
-      [field]: {
-        $regex: searchTerm,
-        $options: 'i',
-      },
-    }));
-    andConditions.push({ $or: orConditions });
-  }
-
-  // Add additional filters to the query
-  Object.keys(filtersData).forEach((key) => {
-    if (filtersData[key]) {
-      andConditions.push({ [key]: filtersData[key] });
-    }
-  });
-
-  // Combine conditions
-  const whereConditions = andConditions.length > 0 ? { $and: andConditions } : {};
-
-  // Sort conditions
-  const sortConditions: { [key: string]: string } = {};
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  // Execute query
-  const [data, total] = await Promise.all([
-    Hospital.find(whereConditions).sort(sortConditions).skip(skip).limit(limit),
-    Hospital.countDocuments(whereConditions),
-  ]);
-
-  return {
-    meta: {
-      page,
-      limit,
-      total,
-      count: data.length,
+// Search functionality
+if (searchTerm) {
+  const orConditions = hospitalSearchAbleFields.map(field => ({
+    [field]: {
+      $regex: searchTerm,
+      $options: 'i',
     },
-    data,
-  };
+  }));
+  andConditions.push({ $or: orConditions });
+}
+
+// Filtering functionality
+Object.keys(filtersData).forEach(field => {
+  //@ts-ignore
+  if (hospitalFilterableFields.includes(field) && filtersData[field]) {
+    andConditions.push({
+      //@ts-ignore
+      [field]: filtersData[field],
+    });
+  }
+});
+
+// Combine all conditions
+const whereConditions =
+  andConditions.length > 0 ? { $and: andConditions } : {};
+
+// Ensure sortOrder is of the correct type
+const sortConditions: { [key: string]: SortOrder } = {};
+if (sortBy && sortOrder) {
+  const validSortOrder: SortOrder = sortOrder === 'asc' || sortOrder === 'desc' ? sortOrder : (sortOrder === '1' ? 1 : -1);
+  sortConditions[sortBy] = validSortOrder;
+}
+
+// Querying the database
+const [data, total] = await Promise.all([
+  Hospital.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit),
+    Hospital.countDocuments(whereConditions),
+]);
+
+// Return the results
+return {
+  meta: {
+    page,
+    limit,
+    total,
+    count: data.length,
+  },
+  data,
 };
-
-
+};
 
 
 const getSingleHospital = async (id: string): Promise<IHospital | null> => {
@@ -137,6 +95,7 @@ const getSingleHospital = async (id: string): Promise<IHospital | null> => {
   const singleUser = await Hospital.findOne({ _id: id });
   return singleUser;
 };
+
 
 const updateHospital = async (
   id: string,

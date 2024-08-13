@@ -15,3 +15,10 @@ export type IGenericErrorResponse = {
   message: string;
   errorMessages: IGenericErrorMessage[];
 };
+
+export type IPaginationProps = {
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  limit?: number;
+};
