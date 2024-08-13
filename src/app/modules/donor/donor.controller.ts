@@ -4,6 +4,8 @@ import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { DonorService } from './donor.service';
 import { IDonor } from './donor.interface';
+import pick from '../../../shared/pick';
+import { donorFilterableFields } from './donor.constants';
 
 
 const addDonor: RequestHandler = catchAsync(async (req, res) => {
@@ -18,7 +20,11 @@ const addDonor: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getDonors: RequestHandler = catchAsync(async (req, res) => {
-  const result = await DonorService.getDonors();
+
+  const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
+  const filters = pick(req.query,donorFilterableFields);
+
+  const result = await DonorService.getDonors(options, filters);
   sendResponse<IDonor[]>(res, {
     statusCode: httpStatus.OK,
     success: true,

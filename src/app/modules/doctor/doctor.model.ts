@@ -7,7 +7,7 @@ import { City } from "../../../enums/city";
 const DoctorSchema: Schema = new Schema(
   {
     doctor_id: {
-      type: Number,
+      type: String,
       unique: true,
       required: false,
     },
@@ -18,7 +18,7 @@ const DoctorSchema: Schema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
+      // unique: false,
     },
     specilization_id: {
         type: mongoose.Schema.Types.ObjectId,

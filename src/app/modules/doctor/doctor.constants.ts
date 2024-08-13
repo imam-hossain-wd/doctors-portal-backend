@@ -9,8 +9,6 @@ export const doctorFilterableFields: string[] = [
     'city'
 ];
 
-// speciality , role , city ,name , doctor_id
-
 type productRelationalFieldsMapper = {
     [key: string]: string;
   };

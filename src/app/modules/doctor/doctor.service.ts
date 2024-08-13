@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { generateRamdonDoctorId } from './../../../shared/generateRamdomId';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { IDoctor } from './doctor.interface';
+import { IDoctor, IFiltersProps, IPaginationProps } from './doctor.interface';
 import Doctor from './doctor.model';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import {
   doctorFilterableFields,
   doctorSearchAbleFields,
 } from './doctor.constants';
-import { SortOrder } from 'mongoose';
+
 
 const addDoctor = async (payload: IDoctor): Promise<IDoctor | null> => {
   const doctor_id = generateRamdonDoctorId();
@@ -22,7 +22,7 @@ const addDoctor = async (payload: IDoctor): Promise<IDoctor | null> => {
 
 type SortOrder = 1 | -1 | 'asc' | 'desc';
 
-const getDoctors = async (options: any, filters: any): Promise<any> => {
+const getDoctors = async (options: IPaginationProps, filters: IFiltersProps): Promise<any> => {
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filtersData } = filters;
@@ -42,8 +42,10 @@ const getDoctors = async (options: any, filters: any): Promise<any> => {
 
   // Filtering functionality
   Object.keys(filtersData).forEach(field => {
+    //@ts-ignore
     if (doctorFilterableFields.includes(field) && filtersData[field]) {
       andConditions.push({
+        //@ts-ignore
         [field]: filtersData[field],
       });
     }

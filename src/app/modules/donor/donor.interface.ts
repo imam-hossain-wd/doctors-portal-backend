@@ -6,9 +6,10 @@ import { City } from "../../../enums/city";
 
 export type IDonor = {
     _id?: mongoose.Types.ObjectId;
-    donor_id?: number;
+    donor_id?: string;
     name: string;
     email:string;
+    last_donation_time: string;
     password:string;
     image?: string;
     phone_number: string;
