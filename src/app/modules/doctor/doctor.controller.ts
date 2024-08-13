@@ -4,6 +4,8 @@ import sendResponse from '../../../shared/sendResponse';
 import { IDoctor } from './doctor.interface';
 import httpStatus from 'http-status';
 import { DoctorService } from './doctor.service';
+import { doctorFilterableFields } from './doctor.constants';
+import pick from '../../../shared/pick';
 
 const addDoctor: RequestHandler = catchAsync(async (req, res) => {
   const data = req.body;
@@ -17,7 +19,13 @@ const addDoctor: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getDoctors: RequestHandler = catchAsync(async (req, res) => {
-  const result = await DoctorService.getDoctors();
+
+  const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
+  const filters = pick(req.query,doctorFilterableFields);
+
+  // console.log(options, filters, 'options, filters');
+
+  const result = await DoctorService.getDoctors(options, filters);
   sendResponse<IDoctor[]>(res, {
     statusCode: httpStatus.OK,
     success: true,

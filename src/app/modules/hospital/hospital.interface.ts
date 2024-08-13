@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { City } from "../../../constants";
+import { City } from "../../../enums/city";
+
 
 export type IHospital = {
     _id?: mongoose.Types.ObjectId;

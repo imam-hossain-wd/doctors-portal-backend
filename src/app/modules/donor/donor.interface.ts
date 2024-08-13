@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-import { City, UserRole } from "../../../constants";
+import { UserRole } from "../../../enums/user";
+import { City } from "../../../enums/city";
+
 
 
 export type IDonor = {

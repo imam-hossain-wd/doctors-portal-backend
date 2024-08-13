@@ -4,19 +4,7 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { IHospital } from './hospital.interface';
-import { City } from '../../../constants';
-
-// const hospitalSchema = new Schema<IHospital>(
-//   {
-//     hospital_id: { type: String },
-//     name: { type: String, required: true },
-//     address: { type: String, required: true, unique: true },
-//     email: { type: String, required: true, unique: true },
-//     phone_number: { type: String, required: true, unique: true },
-//   },
-// );
-
-// export const Hospital = model<IHospital>('Hospital', hospitalSchema);
+import { City } from '../../../enums/city';
 
 const HospitalSchema: Schema = new Schema(
   {
@@ -32,7 +20,7 @@ const HospitalSchema: Schema = new Schema(
     website_link: { type: String, required: true },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt timestamps
+    timestamps: true,
   }
 );
 

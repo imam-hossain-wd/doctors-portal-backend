@@ -2,12 +2,14 @@
 
 
 import mongoose from "mongoose";
-import { City, UserRole } from "../../../constants";
+import { UserRole } from "../../../enums/user";
+import { City } from "../../../enums/city";
+
 
 
 export type IDoctor = {
     _id?: mongoose.Types.ObjectId;
-    doctor_id?: string;
+    doctor_id?: number;
     name: string;
     email:string;
     qualification:string;

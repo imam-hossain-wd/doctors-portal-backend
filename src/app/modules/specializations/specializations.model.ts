@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { ISpecializations, Specialty } from './specializations.interface';
+import { ISpecializations } from './specializations.interface';
+import { Specialty } from '../../../enums/speciality';
 
 const SpecializationsSchema: Schema = new Schema(
   {

@@ -1,15 +1,9 @@
 /* eslint-disable no-unused-vars */
 
 import mongoose from 'mongoose';
+import { Specialty } from '../../../enums/speciality';
 
-export enum Specialty  {
-  Cardiologist = 'Cardiologist',
-  Pulmonary = 'Pulmonary',
-  Radiology = 'Radiology',
-  Urology = 'Urology',
-  Neurology = 'Neurology',
-  Hypnotherapy = 'Hypnotherapy',
-}
+
 
 export type ISpecializations = {
   _id?: mongoose.Types.ObjectId;

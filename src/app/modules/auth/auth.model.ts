@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
 import { IUser } from './auth.interface';
-import { UserRole } from '../../../constants';
+import { UserRole } from '../../../enums/user';
 
 
 
@@ -16,7 +16,7 @@ const userSchema = new Schema<IUser>(
     profileImageUrl: { type: String},
     password: { type: String, required: true, unique: true },
     phone_number: { type: String, required: true },
-    role: { type: String, enum: Object.values(UserRole), default: UserRole.Patient },
+    role: { type: String, enum: Object.values(UserRole), default: UserRole.PATIENT },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },

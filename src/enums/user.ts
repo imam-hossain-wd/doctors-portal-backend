@@ -1,8 +1,11 @@
 /* eslint-disable no-unused-vars */
-export enum ENUM_USER_ROLE {
-  PATIENT = 'patient',
-  DOCTOR = 'doctor',
-  DONOR = 'donor',
-  ADMIN = 'admin',
-  SUPER_ADMIN = 'super_admin',
+export enum UserRole {
+  ADMIN ="Admin",
+  SUPER_ADMIN= "Super_Admin",
+  PATIENT="Patient",
+  DOCTOR ="Doctor",
+  DONOR ="Donor"
 }
+
+
+export const ENUM_USER_ROLE = UserRole ;

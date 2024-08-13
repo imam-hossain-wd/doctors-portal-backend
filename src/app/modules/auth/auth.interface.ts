@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import mongoose from 'mongoose';
-import { UserRole } from '../../../constants';
-
+import { UserRole } from '../../../enums/user';
 
 
 export type IUser = {
