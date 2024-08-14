@@ -3,14 +3,14 @@
 import { generateRamdonDoctorId } from './../../../shared/generateRamdomId';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { IDoctor, IFiltersProps, IPaginationProps } from './doctor.interface';
-import Doctor from './doctor.model';
+import { IDoctor, IDoctorReview, IFiltersProps } from './doctor.interface';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import {
   doctorFilterableFields,
   doctorSearchAbleFields,
 } from './doctor.constants';
-
+import { Doctor, DoctorReview } from './doctor.model';
+import { IPaginationProps } from '../../../interfaces/common';
 
 const addDoctor = async (payload: IDoctor): Promise<IDoctor | null> => {
   const doctor_id = generateRamdonDoctorId();
@@ -19,10 +19,12 @@ const addDoctor = async (payload: IDoctor): Promise<IDoctor | null> => {
   return result;
 };
 
-
 type SortOrder = 1 | -1 | 'asc' | 'desc';
 
-const getDoctors = async (options: IPaginationProps, filters: IFiltersProps): Promise<any> => {
+const getDoctors = async (
+  options: IPaginationProps,
+  filters: IFiltersProps
+): Promise<any> => {
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filtersData } = filters;
@@ -58,7 +60,12 @@ const getDoctors = async (options: IPaginationProps, filters: IFiltersProps): Pr
   // Ensure sortOrder is of the correct type
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
-    const validSortOrder: SortOrder = sortOrder === 'asc' || sortOrder === 'desc' ? sortOrder : (sortOrder === '1' ? 1 : -1);
+    const validSortOrder: SortOrder =
+      sortOrder === 'asc' || sortOrder === 'desc'
+        ? sortOrder
+        : sortOrder === '1'
+        ? 1
+        : -1;
     sortConditions[sortBy] = validSortOrder;
   }
 
@@ -83,7 +90,6 @@ const getDoctors = async (options: IPaginationProps, filters: IFiltersProps): Pr
     data,
   };
 };
-
 
 const getSingleDoctor = async (id: string): Promise<IDoctor | null> => {
   const isexits = await Doctor.findOne({ _id: id });
@@ -115,10 +121,57 @@ const deleteDoctor = async (id: string) => {
   return result;
 };
 
+// doctor review
+
+const addDoctorReview = async (
+  payload: IDoctorReview
+): Promise<IDoctorReview | null> => {
+  const result = await DoctorReview.create(payload);
+  return result;
+};
+const allDoctorReviews = async (): Promise<IDoctorReview[] | null> => {
+  const result = await DoctorReview.find({});
+  return result;
+};
+
+const singleDoctorReview = async (
+  id: string
+): Promise<IDoctorReview | null> => {
+  const result = await DoctorReview.findById(id);
+  return result;
+};
+
+
+const updateDoctorReview = async (
+  payload: IDoctorReview,
+  id: string
+): Promise<IDoctorReview | null> => {
+  const isDoctorExist = await DoctorReview.findOne({ _id: id });
+
+  if (!isDoctorExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+  const result = await DoctorReview.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
+
+const deleteDoctorReview = async (id: string): Promise<any> => {
+  const result = await DoctorReview.findByIdAndDelete(id);
+  return result;
+};
+
 export const DoctorService = {
   addDoctor,
   getDoctors,
   getSingleDoctor,
   updateDoctor,
   deleteDoctor,
+  addDoctorReview,
+  allDoctorReviews,
+  singleDoctorReview,
+  updateDoctorReview,
+  deleteDoctorReview,
 };

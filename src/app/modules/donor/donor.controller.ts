@@ -25,7 +25,7 @@ const getDonors: RequestHandler = catchAsync(async (req, res) => {
   const filters = pick(req.query,donorFilterableFields);
 
   const result = await DonorService.getDonors(options, filters);
-  sendResponse<IDonor[]>(res, {
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Retrived Donor successfully',

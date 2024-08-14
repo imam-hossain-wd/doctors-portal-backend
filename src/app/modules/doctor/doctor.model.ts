@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IDoctor } from "./doctor.interface";
+import { IDoctor, IDoctorReview } from "./doctor.interface";
 import { UserRole } from "../../../enums/user";
 import { City } from "../../../enums/city";
 
@@ -75,6 +75,41 @@ const DoctorSchema: Schema = new Schema(
   }
 );
 
-const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);
 
-export default Doctor;
+const DoctorReviewSchema: Schema = new Schema(
+  {
+    title: {
+      type: String,
+      unique: true,
+      required: false,
+    },
+    rating: {
+      type: String,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    doctor_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Specializations", 
+        required: true,
+      },
+    patient_id: {
+      type: mongoose.Schema.Types.ObjectId,
+        ref: "Specializations", 
+        required: true,
+    },
+
+  },
+  {
+    timestamps: true,
+  }
+);
+
+
+
+export const DoctorReview = mongoose.model<IDoctorReview>("Doctor-Review", DoctorReviewSchema);
+
+export const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);

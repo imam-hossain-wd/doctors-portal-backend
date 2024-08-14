@@ -21,6 +21,16 @@ export type IDoctor = {
   website_link: string;
 };
 
+export type IDoctorReview ={
+  _id?: mongoose.Types.ObjectId;
+  title?: string;
+  rating: string;
+  comment: string;
+  doctor_id: string;
+  patient_id: string;
+}
+
+
 
 export type IFiltersProps = {
   searchTerm?: string;

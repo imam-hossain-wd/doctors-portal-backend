@@ -5,11 +5,15 @@ import { userService } from "./user.service";
 import { IUser } from "../auth/auth.interface";
 import { RequestHandler } from "express";
 
+import pick from "../../../shared/pick";
+import { userSearchAbleFields } from "./user.constants";
+
 
 const getAllUsers:RequestHandler = catchAsync(async (req, res) => {
-
-    const result = await userService.getAllUsers();
-    sendResponse<IUser[]>(res, {
+  const options = pick(req.query, ['sortBy', 'sortOrder', 'page', 'limit']);
+  const filters = pick(req.query,userSearchAbleFields);
+    const result = await userService.getAllUsers(options,filters);
+    sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Retrived all users successfully',

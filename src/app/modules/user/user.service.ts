@@ -1,12 +1,69 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IUser } from '../auth/auth.interface';
 import { User } from '../auth/auth.model';
+import { userFilterableFields, userSearchAbleFields } from './user.constants';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
 
 
-const getAllUsers = async (): Promise<IUser[] | null> => {
-  const users = await User.find();
-  return users;
+
+type SortOrder = 1 | -1 | 'asc' | 'desc';
+
+const getAllUsers = async (options:any,filters:any) => {
+  const { page, limit, skip, sortBy, sortOrder } =
+  paginationHelpers.calculatePagination(options);
+const { searchTerm, ...filtersData } = filters;
+const andConditions: any[] = [];
+
+if (searchTerm) {
+  const orConditions = userSearchAbleFields.map(field => ({
+    [field]: {
+      $regex: searchTerm,
+      $options: 'i',
+    },
+  }));
+  andConditions.push({ $or: orConditions });
+}
+
+Object.keys(filtersData).forEach(field => {
+  if (userFilterableFields.includes(field) && filtersData[field]) {
+    andConditions.push({
+      
+      [field]: filtersData[field],
+    });
+  }
+});
+
+// Combine all conditions
+const whereConditions =
+  andConditions.length > 0 ? { $and: andConditions } : {};
+
+// Ensure sortOrder is of the correct type
+const sortConditions: { [key: string]: SortOrder } = {};
+if (sortBy && sortOrder) {
+  const validSortOrder: SortOrder = sortOrder === 'asc' || sortOrder === 'desc' ? sortOrder : (sortOrder === '1' ? 1 : -1);
+  sortConditions[sortBy] = validSortOrder;
+}
+
+// Querying the database
+const [data, total] = await Promise.all([
+  User.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit),
+    User.countDocuments(whereConditions),
+]);
+
+return {
+  meta: {
+    page,
+    limit,
+    total,
+    count: data.length,
+  },
+  data,
+};
 };
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
@@ -35,7 +92,6 @@ const updateUser = async (
 };
 
 const deleteUser = async (id: string) => {
-  console.log(id, 'id delete user');
   const result = await User.findByIdAndDelete(id);
   return result;
 };

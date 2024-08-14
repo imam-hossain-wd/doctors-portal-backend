@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { IDoctor } from './doctor.interface';
+import { IDoctor, IDoctorReview } from './doctor.interface';
 import httpStatus from 'http-status';
 import { DoctorService } from './doctor.service';
 import { doctorFilterableFields } from './doctor.constants';
@@ -17,6 +17,18 @@ const addDoctor: RequestHandler = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const addDoctorReview: RequestHandler = catchAsync(async (req, res) => {
+  const data = req.body;
+  const result = await DoctorService.addDoctorReview(data);
+  sendResponse<IDoctorReview>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Doctor Review Add successfully',
+    data: result,
+  });
+});
+
 
 const getDoctors: RequestHandler = catchAsync(async (req, res) => {
 
@@ -71,4 +83,5 @@ export const DoctorController = {
   getSingleDoctor,
   updateDoctor,
   deleteDoctor,
+  addDoctorReview
 };
